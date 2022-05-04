@@ -84,6 +84,10 @@ def working_branch = "master"
 node('ocp-agent') {
     container('exec') {
         dir('service-telemetry-operator') {
+          stage ('Install env') {
+            sh 'virtualenv .venv'
+            sh '.venv/bin/pip install kubernetes'
+          }
             stage ('Clone Upstream') {
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                     checkout scm
